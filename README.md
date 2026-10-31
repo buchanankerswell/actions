@@ -1,11 +1,11 @@
 # actions: shared reusable workflows
 
-Reusable GitHub Actions workflows for `rxndb`, `pkft`, and `light_slides`.
-Repos call these by tag (`@v1`) so fixes roll out without copy-paste drift.
+Reusable GitHub Actions workflows shared across repositories. Callers pin a
+major tag (`@v1`) so fixes roll out without copy-paste drift.
 
 ## Workflows
 
-- `python-test-release.yml` — 3-OS pytest + Codecov, then tag-gated
+- `python-test-release.yml` — multi-OS pytest + Codecov, then tag-gated
   TestPyPI → PyPI → GitHub release. Input: `package` (coverage flag).
   Secrets: `codecov-token`, `test-pypi-api-token`, `pypi-api-token`.
 - `python-docs.yml` — Sphinx HTML build + short-lived artifact
@@ -21,7 +21,7 @@ jobs:
   test-and-release:
     uses: buchanankerswell/actions/.github/workflows/python-test-release.yml@v1
     with:
-      package: rxnDB
+      package: mypackage
     secrets:
       codecov-token: ${{ secrets.CODECOV_TOKEN }}
       test-pypi-api-token: ${{ secrets.TEST_PYPI_API_TOKEN }}
