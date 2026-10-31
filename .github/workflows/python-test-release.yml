@@ -45,7 +45,7 @@ jobs:
         run: |
           pytest --cov=${{ inputs.package }} --cov-branch --cov-report=xml
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c8475a5 # v7.1.1, node24 (v5 tag still nests github-script v7/node20)
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1, node24 (v5 tag still nests github-script v7/node20)
         with:
           token: ${{ secrets.codecov-token }}
   check-version:
