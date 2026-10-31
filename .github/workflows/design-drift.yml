@@ -1,0 +1,29 @@
+---
+name: Reusable design drift check
+on:
+  workflow_call:
+    inputs:
+      static-dir:
+        description: "Directory holding the vendored design files"
+        required: true
+        type: string
+      canonical-ref:
+        description: "actions ref to diff against (tracks the caller's pin)"
+        required: false
+        default: "v1"
+        type: string
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6
+        with:
+          repository: buchanankerswell/actions
+          ref: ${{ inputs.canonical-ref }}
+          path: canonical
+      - name: Diff vendored files against canonical design/
+        run: |
+          for f in tokens.css dialogs.css dialogs.js; do
+            diff -u "canonical/design/$f" "${{ inputs.static-dir }}/$f"
+          done

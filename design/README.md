@@ -2,8 +2,9 @@
 
 Single source of truth for the shared look and behavior (see STANDARDS.md
 §1). Each app vendors verbatim copies so the sites stay build-free and work
-offline; a CI drift check diffs the vendored files against the pinned
-`actions` tag and fails on divergence.
+offline. The `design-drift` reusable workflow diffs the vendored files
+against the pinned `actions` tag and fails on divergence — edit here, then
+sync the vendors, never the other way round.
 
 ## Files
 
