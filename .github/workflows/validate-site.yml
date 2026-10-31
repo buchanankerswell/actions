@@ -1,0 +1,25 @@
+---
+name: Reusable static-site validation
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: "Python version for the validation scripts"
+        required: false
+        default: "3.13"
+        type: string
+      site-dir:
+        description: "Published site directory to validate"
+        required: false
+        default: "docs"
+        type: string
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "${{ inputs.python-version }}"
+      - run: python3 pipeline/check.py ${{ inputs.site-dir }}
+      - run: python3 pipeline/check_media.py
