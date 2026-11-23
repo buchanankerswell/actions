@@ -90,8 +90,22 @@ Maintenance); existing repos converge through review against this file.
   (rebuildable from any tag; release dists stay on their tags). Sites:
   fixture-free validation on PRs, main, and tags; publishing is automatic
   from `main`.
+- Fast checks run in `ci.yml` on every PR: `ruff check` + `ruff format`
+  (150 cols) and `pyright` where configured (`lint-python.yml`), plus
+  `prettier --check` on JS/CSS (`lint-web.yml`). Canonical lint configs
+  (ruff, prettier, `pyrightconfig.json`) live in
+  `kerswell_et_al_nonhydrostatic_benchmarks`; repos copy them verbatim.
+- Markdown style is enforced with `markdownlint.yml` (canonical
+  `.markdownlint.json` in `kerswell_et_al_nonhydrostatic_benchmarks`);
+  PRs lint at least `README.md` plus `AGENTS.md` where present, and
+  pandoc-manuscript sources stay out of scope. Link health is checked
+  source-only with `linkcheck.yml` (lychee, weekly schedule recommended);
+  spelling with `typos.yml` (check-only; per-repo `.typos.toml`
+  allowlists for domain words and data/bib/vendored exclusions). R code
+  is linted with `lint-r.yml` against the canonical `.lintr`.
 - Workflow runs are pruned on a schedule (7 days branch, 90 days main/tag).
   The Codecov app is shared; coverage-free repos install nothing.
+  `dependabot.yml` (weekly `github-actions`) is copied to every repo.
 
 ## Maintenance
 

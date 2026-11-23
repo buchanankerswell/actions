@@ -1,0 +1,21 @@
+---
+name: Reusable Prettier check
+on:
+  workflow_call:
+    inputs:
+      paths:
+        description: "Space-separated globs for `prettier --check` (JS/CSS only by default)"
+        required: false
+        default: "**/*.js **/*.css"
+        type: string
+jobs:
+  lint-web:
+    name: Prettier check
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Check formatting with Prettier
+        run: |
+          shopt -s globstar
+          npx --yes prettier --check ${{ inputs.paths }}

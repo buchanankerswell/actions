@@ -2,6 +2,17 @@
 name: Reusable workflow-run pruning
 on:
   workflow_call:
+    inputs:
+      days:
+        description: "Delete branch runs older than this many days"
+        required: false
+        default: "7"
+        type: string
+      main_days:
+        description: "Delete main and tag runs older than this many days"
+        required: false
+        default: "90"
+        type: string
 jobs:
   prune:
     runs-on: ubuntu-24.04
@@ -10,8 +21,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY: ${{ github.repository }}
-          GRACE_DAYS: "${{ github.event.inputs.days || '7' }}"
-          MAIN_GRACE_DAYS: "${{ github.event.inputs.main_days || '90' }}"
+          GRACE_DAYS: "${{ inputs.days }}"
+          MAIN_GRACE_DAYS: "${{ inputs.main_days }}"
         run: |
           cutoff=$(date -u -d "$GRACE_DAYS days ago" +%Y-%m-%dT%H:%M:%SZ)
           main_cutoff=$(date -u -d "$MAIN_GRACE_DAYS days ago" +%Y-%m-%dT%H:%M:%SZ)

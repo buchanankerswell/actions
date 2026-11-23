@@ -1,0 +1,20 @@
+---
+name: Reusable link check with lychee
+on:
+  workflow_call:
+    inputs:
+      args:
+        description: "Full lychee argument string: flags, excludes, and quoted path globs"
+        required: false
+        default: "--verbose --no-progress --timeout 60 './**/*.md'"
+jobs:
+  linkcheck:
+    name: Linkcheck
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Check links with lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: ${{ inputs.args }}

@@ -1,0 +1,27 @@
+---
+name: Reusable Markdown style check
+on:
+  workflow_call:
+    inputs:
+      config:
+        description: "markdownlint config file in the caller repo"
+        required: false
+        default: ".markdownlint.json"
+        type: string
+      globs:
+        description: "Newline-separated file globs to lint"
+        required: false
+        default: "**/*.md"
+        type: string
+jobs:
+  markdownlint:
+    name: Markdownlint
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Lint Markdown
+        uses: DavidAnson/markdownlint-cli2-action@v25
+        with:
+          config: ${{ inputs.config }}
+          globs: ${{ inputs.globs }}

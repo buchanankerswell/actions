@@ -1,0 +1,13 @@
+---
+name: Reusable spell check with typos
+on:
+  workflow_call:
+jobs:
+  typos:
+    name: Typos
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Check spelling with typos
+        uses: crate-ci/typos@v1
