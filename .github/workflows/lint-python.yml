@@ -1,0 +1,44 @@
+---
+name: Reusable Python lint and typecheck
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: "Python version for the lint environment"
+        required: false
+        default: "3.13"
+        type: string
+      paths:
+        description: "Paths to lint (space-separated, passed to ruff)"
+        required: false
+        default: "."
+        type: string
+      check-format:
+        description: "Also fail on `ruff format --check` differences"
+        required: false
+        default: true
+        type: boolean
+jobs:
+  lint-python:
+    name: Lint Python
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ inputs.python-version }}"
+          cache: "pip"
+      - name: Install lint tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff pyright
+      - name: Ruff check
+        run: ruff check ${{ inputs.paths }}
+      - name: Ruff format check
+        if: inputs.check-format
+        run: ruff format --check ${{ inputs.paths }}
+      - name: Pyright
+        if: hashFiles('pyrightconfig.json') != ''
+        run: pyright

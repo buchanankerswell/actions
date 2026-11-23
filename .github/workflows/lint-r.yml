@@ -1,0 +1,25 @@
+---
+name: Reusable R lint
+on:
+  workflow_call:
+    inputs:
+      path:
+        description: "Directory to lint with lintr::lint_dir (uses the repo .lintr config)"
+        required: false
+        default: "R"
+        type: string
+jobs:
+  lint-r:
+    name: Lint R
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+      - name: Install lintr
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: lintr
+      - name: Lint with lintr
+        run: Rscript -e 'x <- lintr::lint_dir("${{ inputs.path }}"); print(x); if (length(x) > 0L) quit(status = 1L)'

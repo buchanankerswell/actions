@@ -7,6 +7,11 @@ on:
         description: "Directory holding the vendored design files"
         required: true
         type: string
+      files:
+        description: "Space-separated design files to diff"
+        required: false
+        default: "tokens.css dialogs.css dialogs.js"
+        type: string
       canonical-ref:
         description: "actions ref to diff against (tracks the caller's pin)"
         required: false
@@ -14,7 +19,7 @@ on:
         type: string
 jobs:
   drift:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
       - uses: actions/checkout@v6
@@ -24,6 +29,6 @@ jobs:
           path: canonical
       - name: Diff vendored files against canonical design/
         run: |
-          for f in tokens.css dialogs.css dialogs.js; do
+          for f in ${{ inputs.files }}; do
             diff -u "canonical/design/$f" "${{ inputs.static-dir }}/$f"
           done
