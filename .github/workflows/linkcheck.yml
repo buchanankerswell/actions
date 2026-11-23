@@ -7,6 +7,7 @@ on:
         description: "Full lychee argument string: flags, excludes, and quoted path globs"
         required: false
         default: "--verbose --no-progress --timeout 60 './**/*.md'"
+        type: string
 jobs:
   linkcheck:
     name: Linkcheck

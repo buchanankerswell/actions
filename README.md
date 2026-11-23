@@ -18,8 +18,9 @@ major tag (`@v1`) so fixes roll out without copy-paste drift.
   canonical files; `canonical-ref`, default `v1`).
 - `lint-python.yml` — `ruff check` + `ruff format --check` (`paths`,
   default `.`; `check-format`, default true) + `pyright`, which runs only
-  when the caller has a `pyrightconfig.json`. Lint tools float by design
-  (same convention as `npx prettier` in the Makefiles).
+  when the caller has a `pyrightconfig.json`. Tool versions are pinned in
+  the reusable (`ruff`, `pyright`) so CI is deterministic; bump them
+  deliberately after verifying locally.
 - `lint-web.yml` — `prettier --check` (`paths`, default `**/*.js **/*.css`).
 - `markdownlint.yml` — Markdown style (`config`, default `.markdownlint.json`;
   `globs`, default `**/*.md`). Configs follow the canonical
