@@ -100,8 +100,11 @@ Maintenance); existing repos converge through review against this file.
   PRs lint at least `README.md` plus `AGENTS.md` where present, and
   pandoc-manuscript sources stay out of scope. Link health is checked
   source-only with `linkcheck.yml` (lychee, weekly schedule recommended);
-  spelling with `typos.yml` (check-only; per-repo `.typos.toml`
-  allowlists for domain words and data/bib/vendored exclusions). R code
+  spelling with `typos.yml` (check-only against the central
+  `config/typos.toml` allowlist in `actions/`; per-repo `.typos.toml`
+  files keep only path exclusions and repo-specific words with comments,
+  and new CI findings are added centrally by the fix PR — never
+  allowlist a real typo). R code
   is linted with `lint-r.yml` against the canonical `.lintr`.
 - Workflow runs are pruned on a schedule (7 days branch, 90 days main/tag).
   The Codecov app is shared; coverage-free repos install nothing.
