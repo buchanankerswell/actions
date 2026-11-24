@@ -2,6 +2,12 @@
 name: Reusable spell check with typos
 on:
   workflow_call:
+    inputs:
+      canonical-ref:
+        description: "actions ref holding the central typos config (tracks the caller's pin)"
+        required: false
+        default: "v1"
+        type: string
 jobs:
   typos:
     name: Typos
@@ -9,5 +15,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+      - name: Checkout shared typos config
+        uses: actions/checkout@v7
+        with:
+          repository: buchanankerswell/actions
+          ref: ${{ inputs.canonical-ref }}
+          path: canonical
       - name: Check spelling with typos
         uses: crate-ci/typos@v1
+        with:
+          config: canonical/config/typos.toml

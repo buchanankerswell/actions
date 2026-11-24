@@ -29,9 +29,12 @@ major tag (`@v1`) so fixes roll out without copy-paste drift.
   with a 60s timeout; callers extend with their own excludes). Source-only
   by design: no builds, so it stays fast; run it on a weekly schedule for
   link rot.
-- `typos.yml` — check-only spell check. Per-repo allowlists live in the
-  caller's `.typos.toml`; `aspect/.typos.toml` is the house-style example
-  (data/bib/vendored exclusions plus domain words).
+- `typos.yml` — check-only spell check against the central allowlist
+  (`config/typos.toml`, `canonical-ref` default `v1`). Per-repo `.typos.toml`
+  files still apply on top (local discovery merges): keep them to
+  `[files]` exclusions for generated/vendored/data paths, plus any word
+  that genuinely belongs to one repo — with a comment saying why.
+  Everything else goes central (see Typos allowlist below).
 - `lint-r.yml` — `lintr::lint_dir` (`path`, default `R`; uses the caller's
   `.lintr` config, canonical copy in
   `kerswell_et_al_nonhydrostatic_benchmarks`).
@@ -40,6 +43,17 @@ major tag (`@v1`) so fixes roll out without copy-paste drift.
   the dispatch inputs via `with:`.
 
 `dependabot.yml` (weekly `github-actions`) is the copy-source for repos.
+
+## Typos allowlist
+
+`config/typos.toml` is the single source of truth for spelling exceptions.
+When typos CI fails on a new word, the fix PR adds it here —
+allowlist-by-default — unless the word genuinely belongs to one repo, in
+which case it stays in that repo's `.typos.toml` with a comment saying
+why. Never allowlist a real typo to silence CI; fix the source text
+instead. The `typos.yml` reusable pins the check to this file at the
+caller's `@v1`, so allowlist updates roll out with the tag like anything
+else.
 
 ## Example caller
 
