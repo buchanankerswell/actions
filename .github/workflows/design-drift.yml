@@ -21,7 +21,10 @@ jobs:
   drift:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v7
+      - name: Checkout caller repository
+        uses: actions/checkout@v7
+      - name: Checkout canonical design files
+        uses: actions/checkout@v7
         with:
           repository: buchanankerswell/actions
           ref: ${{ inputs.canonical-ref }}
